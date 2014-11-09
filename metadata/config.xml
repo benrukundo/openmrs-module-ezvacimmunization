@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd">
+<module configVersion="1.0">
+
+	<id>ezvacimmunization</id>
+	<name>EzVac Immunization</name>
+	<version>2.9</version>
+	<package>org.openmrs.module.@MODULE_ID@</package>
+	<author>Benjamin Rukundo</author>
+	<description>Wrapper for EzVac Immunization library</description>
+	<activator>@MODULE_PACKAGE@.EzVacImmunizationActivator</activator>
+	
+	<extension>
+		<point>org.openmrs.patientDashboardTab</point>
+		<class>@MODULE_PACKAGE@.extension.html.ImmunizationTab</class>
+	</extension>
+	
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+	</extension>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.vaccineCvxCode</property>
+		<defaultValue>999</defaultValue>
+		<description>CVX codes maps to concepts </description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.vaccinelist </property>
+		<defaultValue>HEPB,TDAP,TD,DTAP,IPV,ROTAVIRUS,HIB,VARICELLA,MMR,HEPA,HPV,MENACTRA,INFLUENZA,ROTARIX,PEDVAX,RECOMBIVAX</defaultValue>
+		<description>Vaccines used for immunization</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.immunizationRecommendationEncounterType</property>
+		<defaultValue>Immunization Recommendation</defaultValue>
+		<description>Encounter Type for the the immunization recommendation. </description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.encountertypeid</property>
+		<defaultValue>2</defaultValue>
+		<description>Encounter Type ID used to retrieve Patients'encounters </description>
+	</globalProperty>	
+	
+		
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+
+</module>

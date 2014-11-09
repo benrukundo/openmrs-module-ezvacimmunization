@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans><!--==============services=====================-->
+
+	<!--===========================URLMapping=========-->
+	<bean id="ezVacImmunizationUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order">
+			<value>50</value>
+		</property>
+
+		<property name="mappings">
+			<props>
+			
+				<prop key="**/immunizationHistory.portlet">immunizationHistoryPortletController</prop>
+				<prop key="module/@MODULE_ID@/fileuploadform.form">FileViewController</prop>
+				<prop key="module/@MODULE_ID@/configvaccinelistform.form">VaccineListController</prop>
+				<prop key="module/@MODULE_ID@/schedulePatientImm.form">SchedulePatientImmunizationRecommController</prop>
+				<prop key="module/@MODULE_ID@/SaveVaccinesRecommPatients.form">SaveAllImmunizationEncounterController</prop>
+				<prop key="module/@MODULE_ID@/configvaccinelistform.form">VaccineListController</prop>
+				<prop key="module/@MODULE_ID@/immunizationEncounter.form">ImmunizationEncounterController</prop>
+				<prop key="module/@MODULE_ID@/obsEncounter.form">ImmunizationObsController</prop>
+				<prop key="module/@MODULE_ID@/savePatientsVaccines.form">SavePatientsVaccinesController</prop>
+				<prop key="module/@MODULE_ID@/saveCohortImmunizationRecommendation.form">SaveCohortImmunizationRecommendationController</prop>
+			</props>
+		</property>
+	</bean>
+	<!--=======================Other Bean===============-->
+	<bean id="immunizationHistoryPortletController"
+		class="@MODULE_PACKAGE@.web.controller.ImmunizationHistoryPortletController" />	
+<!--=======================File upload===============-->		
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<bean id="FileViewController" class="@MODULE_PACKAGE@.web.controller.FileViewController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/fileuploadform</value>
+		</property>
+	</bean>
+	<bean id="VaccineListController" class="@MODULE_PACKAGE@.web.controller.VaccineListController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/configvaccinelistform</value>
+		</property>
+	</bean>
+	<bean id="SavePatientsVaccinesController" class="@MODULE_PACKAGE@.web.controller.SavePatientsVaccinesController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/savePatientsVaccines</value>
+		</property>
+	</bean>
+	
+	<bean id="SchedulePatientImmunizationRecommController" class="@MODULE_PACKAGE@.web.controller.SchedulePatientImmunizationRecommController">
+		<property name="viewName">
+			<value>/module/@MODULE_ID@/schedulePatientImm</value>
+		</property>
+	</bean>
+	
+	
+	
+	<bean id="ImmunizationEncounterController" class="@MODULE_PACKAGE@.web.controller.ImmunizationEncounterController">
+		
+		<property name="commandName"><value>encounter</value></property>
+		<property name="formView"><value>/module/@MODULE_ID@/immunizationEncounter</value></property>
+		<property name="successView"><value>obsEncounter.form</value></property>
+		<property name="sessionForm"><value>true</value></property>
+		<property name="validator">
+			<ref bean="immunizationEncounterValidator"/>
+		</property>
+		
+	</bean>
+	
+	
+	<bean id="ImmunizationObsController" class="@MODULE_PACKAGE@.web.controller.ImmunizationObsController">
+		
+		<property name="commandName"><value>obs</value></property>
+		<property name="formView"><value>/module/@MODULE_ID@/obsEncounter</value></property>
+		<property name="successView"><value>../../patientDashboard.form</value></property>
+			
+				
+	</bean>
+	
+	<bean id="SaveAllImmunizationEncounterController" class="@MODULE_PACKAGE@.web.controller.SaveAllImmunizationEncounterController">
+		
+		<property name="commandName"><value>encounter</value></property>
+		<property name="formView"><value>/module/@MODULE_ID@/SaveVaccinesRecommPatients</value></property>
+		<property name="successView"><value>schedulePatientImm.form</value></property>
+		<property name="sessionForm"><value>true</value></property>
+		<property name="validator">
+			<ref bean="SaveAllImmunizationRecommValidator"/>
+		</property>
+		
+	</bean>
+	
+	<bean id="SaveCohortImmunizationRecommendationController" class="@MODULE_PACKAGE@.web.controller.SaveCohortImmunizationRecommendationController">
+		
+		<property name="commandName"><value>encounter</value></property>
+		<property name="formView"><value>/module/@MODULE_ID@/saveCohortImmunizationRecommendation</value></property>
+		<property name="successView"><value>../../admin/index.htm</value></property>
+		<property name="sessionForm"><value>true</value></property>
+		<property name="validator">
+			<ref bean="SaveCohortImmunizationRecommendationValidator"/>
+		</property>
+		
+	</bean>
+	
+	
+	<bean id="immunizationEncounterValidator" class="@MODULE_PACKAGE@.web.controller.ImmunizationEncounterValidator"/>
+	
+	<bean id="SaveAllImmunizationRecommValidator" class="@MODULE_PACKAGE@.web.controller.SaveAllImmunizationRecommValidator"/>
+	<bean id="SaveCohortImmunizationRecommendationValidator" class="@MODULE_PACKAGE@.web.controller.SaveCohortImmunizationRecommendationValidator"/>
+	
+<!--=======================Excel format controller===============		
+	<bean id="ExcelImmunizationHistoryController" class="@MODULE_PACKAGE@.web.controller.ExcelImmunizationHistoryController"/>
+	<bean id="ExcelViewController" class="@MODULE_PACKAGE@.web.controller.ExcelViewController"/>
+	
+	-->
+	
+	  <!-- ========================= Services ========================= -->
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>@MODULE_PACKAGE@.ImmunizationService</value>
+				<bean
+					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager" />
+					</property> <!-- more req stuff -->
+					<property name="target">
+						<bean class="@MODULE_PACKAGE@.service.impl.ImmunizationServiceImpl">
+							<property name="immunizationServiceDAO">
+								<bean class="@MODULE_PACKAGE@.db.hibernate.ImmunizationServiceDAOImpl">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor" />
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean
+							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+		
+</beans>

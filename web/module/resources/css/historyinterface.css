@@ -1,0 +1,22 @@
+.complete {
+	
+	color: green;
+	font-weight: bold;
+}
+
+.updated {
+	color: #black;
+	font-weight: bold;
+}
+
+.notupdated {
+	color: #993333;
+	font-weight: bold;	
+}
+.due
+{
+color: #993333;
+font-weight: bold;
+}
+tr:nth-child(even) {background: #CCC}*/
+/*tr:nth-child(odd) {background: #FFF}*/
